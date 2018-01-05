@@ -19,10 +19,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
 <script src="<?php echo base_url('skin/admin/js/jquery.min.js'); ?>"></script>
+<script src="<?php echo base_url('skin/admin/js/jquery.cookie.js'); ?>"></script>
 <script src="<?php echo base_url('skin/admin/js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo base_url('skin/admin/js/fastclick.js'); ?>"></script>
 <script src="<?php echo base_url('skin/admin/js/adminlte.min.js'); ?>"></script>
-
 <script>var ROOT = '<?php echo base_url(); ?>'</script>
 <script>var admin_user_id='<?php echo $this->session->userdata('userid'); ?>'</script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
