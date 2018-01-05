@@ -22,19 +22,12 @@
 <script src="<?php echo base_url('skin/admin/js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo base_url('skin/admin/js/fastclick.js'); ?>"></script>
 <script src="<?php echo base_url('skin/admin/js/adminlte.min.js'); ?>"></script>
- <?php /* <script src="<?php echo base_url('skin/admin/js/jquery.sparkline.min.js'); ?>"></script>
-<!-- jvectormap  -->
-<script src="<?php echo base_url('skin/admin/js/jquery-jvectormap-1.2.2.min.js'); ?>"></script>
-<script src="<?php echo base_url('skin/admin/js/jquery-jvectormap-world-mill-en.js'); ?>"></script>
-<!-- SlimScroll -->
-<script src="<?php echo base_url('skin/admin/js/jquery.slimscroll.min.js'); ?>"></script>
-<!-- ChartJS -->
-<script src="<?php echo base_url('skin/admin/js/Chart.js'); ?>"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?php echo base_url('skin/admin/js/dashboard2.js'); ?>"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<?php echo base_url('skin/admin/js/demo.js'); ?>"></script> */ ?>
+
 <script>var ROOT = '<?php echo base_url(); ?>'</script>
+<script>var admin_user_id='<?php echo $this->session->userdata('userid'); ?>'</script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="<?php echo base_url('skin/admin/node/node-setup.js'); ?>"></script>
+
 <?php
 if($style!="")
 	echo $style;
