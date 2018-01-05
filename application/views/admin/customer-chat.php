@@ -322,8 +322,3 @@
 		</div>
 	</div>
 </section>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-var admin_user_id='<?php echo $this->session->userdata('userid'); ?>';
-
-</script>

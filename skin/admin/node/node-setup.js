@@ -24,7 +24,7 @@ else
 		$('#customer-list').html('');
 		if(data.customerdata){
 			for(n in data.customerdata){
-				$('#customer-list').append('<li class="node"><a id="customer-anchor" data-id='+data.customerdata[n].id+' href="javascript:void(0)"><div><span>'+data.customerdata[n].name+'</span><span style="float:right" data-toggle="tooltip" title="" class="badge bg-red" data-original-title="'+data.customerdata[n].unread_msg+' New Messages" >'+data.customerdata[n].unread_msg+'</span></div></a></li>');
+				$('#customer-list').append('<li class="node"><a id="customer-anchor" onclick="customerchatview('+data.customerdata[n].id+')" data-id='+data.customerdata[n].id+' href="javascript:void(0)"><div><span>'+data.customerdata[n].name+'</span><span style="float:right" data-toggle="tooltip" title="" class="badge bg-red" data-original-title="'+data.customerdata[n].unread_msg+' New Messages" >'+data.customerdata[n].unread_msg+'</span></div></a></li>');
 			}
 		}
 	});
@@ -32,7 +32,7 @@ else
 		$('#customer-list').html('');
 		if(data.customerdata){
 			for(n in data.customerdata){
-				$('#customer-list').append('<li class="node"><a id="customer-anchor" data-id='+data.customerdata[n].id+' href="javascript:void(0)"><div><span>'+data.customerdata[n].name+'</span><span style="float:right" data-toggle="tooltip" title="" class="badge bg-red" data-original-title="'+data.customerdata[n].unread_msg+' New Messages" >'+data.customerdata[n].unread_msg+'</span></div></a></li>');
+				$('#customer-list').append('<li class="node"><a id="customer-anchor" onclick="customerchatview('+data.customerdata[n].id+')" data-id='+data.customerdata[n].id+' href="javascript:void(0)"><div><span>'+data.customerdata[n].name+'</span><span style="float:right" data-toggle="tooltip" title="" class="badge bg-red" data-original-title="'+data.customerdata[n].unread_msg+' New Messages" >'+data.customerdata[n].unread_msg+'</span></div></a></li>');
 			}
 		}
 	});
@@ -79,15 +79,14 @@ else
 		
 		$('#cust-profile-view').append('<div class="box box-primary"><div class="box-body box-profile" id="profile-view"><img class="profile-user-img img-responsive img-circle" src="'+ROOT+'skin/admin/images/userPlaceholder.png" alt="User profile picture"><h3 class="profile-username text-center">'+data.customerdata[0].name+'</h3><p class="text-muted text-center">'+data.customerdata[0].ipaddress+'</p><div class="text-center"><strong><i class="fa fa-envelope margin-r-5"></i> Email</strong><p class="text-muted">'+data.customerdata[0].email+'</p><strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong><p class="text-muted">'+data.customerdata[0].country+'</p><strong><i class="fa fa-globe margin-r-5"></i> Web Browser</strong><p class="text-muted">'+data.customerdata[0].useragent+'</p><strong><i class="fa fa-bookmark margin-r-5"></i> Referrer</strong><p class="text-muted">'+data.customerdata[0].referrer+'</p><strong><i class="fa fa-desktop margin-r-5"></i> Resolution</strong><p class="text-muted">'+data.customerdata[0].resolution+'</p><strong><i class="fa fa-globe margin-r-5"></i> Current Page</strong><p class="text-muted">'+data.customerdata[0].refresh+'</p><strong><i class="margin-r-5"></i> Chat Status</strong><p class="text-muted">'+status+'</p></div></div></div>');
 	});
-	$('body').on("click",'#customer-anchor', function(e) {	
-		var chatid = this.getAttribute("data-id");
+	function customerchatview(chatid){	
 		if(chatid)
 		{
 			viewInfo(chatid);
 		}
-		function viewInfo(chatid)	
-		{
-			chatpage.emit('custinfo', {chatid:chatid,admin_user_id:admin_user_id});
-		}
-	});	
+	}
+	function viewInfo(chatid)	
+	{
+		chatpage.emit('custinfo', {chatid:chatid,admin_user_id:admin_user_id});
+	}
 }
