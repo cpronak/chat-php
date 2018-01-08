@@ -69,7 +69,7 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 					},
 					function (callback)
                     {
-                        connection.query('SELECT count(id) as tot_comment  from livehelp_messages where livehelp_messages.chat = '+ data.user_id +' and status=0', function (err2, comment_count)
+                        connection.query('SELECT count(id) as unread_count  from livehelp_messages where livehelp_messages.chat = '+ data.user_id +' and status=0', function (err2, comment_count)
                         {
 							if (err2) return callback(err2);
                             callback(null, comment_count);

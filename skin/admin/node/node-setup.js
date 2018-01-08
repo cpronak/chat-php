@@ -84,6 +84,7 @@ else
 	chatpage.on('custinfo-same',function(data){
 		if($.cookie('live_chat_user')==data.customerdata[0].id)
 		{
+			console.log(data);
 			$("#cust-profile-view").html('');
 			$("#chat-windows").html('');
 			
@@ -137,5 +138,9 @@ else
 	function viewInfo(chatid)	
 	{
 		chatpage.emit('custinfo', {chatid:chatid,admin_user_id:admin_user_id});
+	}
+	function removeunread()
+	{
+		
 	}
 }
