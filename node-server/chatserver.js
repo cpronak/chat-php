@@ -38,7 +38,6 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 				}
 			 ], function (err, results)
 				{
-					console.info(results);
 					if(err) throw err;
 					socket.emit('chatdata',
 					{
@@ -77,7 +76,7 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
                     },
 					function (callback)
                     {
-                       connection.query('SELECT livehelp_chats.*,count(livehelp_messages.id) as unread_msg FROM livehelp_messages INNER JOIN livehelp_chats ON livehelp_messages.chat=livehelp_chats.id and livehelp_chats.status = 0 and livehelp_messages.status=0 group by(livehelp_chats.id)', function (err3, userdata)
+                       connection.query('SELECT livehelp_chats.*,(COUNT(livehelp_messages.`status`)-SUM(livehelp_messages.`status`)) as unread_msg FROM livehelp_messages INNER JOIN livehelp_chats ON livehelp_messages.chat=livehelp_chats.id and livehelp_chats.status = 0 group by(livehelp_chats.id)', function (err3, userdata)
                         {
 							if (err3) return callback(err3);
 							callback(null, userdata);
@@ -87,7 +86,7 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
                     {
                        connection.query('SELECT * from livehelp_messages where livehelp_messages.chat='+ data.user_id +'', function (err4, sendmsg)
                         {
-							if (err4) return callback(err3);
+							if (err4) return callback(err4);
 							callback(null, sendmsg);
                         });
                     },
@@ -167,7 +166,7 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 			 async.parallel([
 				function(callback)
 				{
-					connection.query('SELECT livehelp_chats.*,count(livehelp_messages.id) as unread_msg FROM livehelp_messages INNER JOIN livehelp_chats ON livehelp_messages.chat=livehelp_chats.id and livehelp_chats.status = 0 and livehelp_messages.status=0 group by(livehelp_chats.id)', function (error1, userdata)
+					connection.query('SELECT livehelp_chats.*,(COUNT(livehelp_messages.`status`)-SUM(livehelp_messages.`status`)) as unread_msg FROM livehelp_messages INNER JOIN livehelp_chats ON livehelp_messages.chat=livehelp_chats.id and livehelp_chats.status = 0 group by(livehelp_chats.id)', function (error1, userdata)
 					{
 						if (error1) return callback(error1);
 						callback(null, userdata);
@@ -185,22 +184,34 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 				});
 		});
 	});
-	socket.on('disconnect', function ()
+	socket.on('removeunread', function (data)
     {
 		pool.getConnection(function (err, connection)
         {
-			/* connection.query('DELETE from users where user_id='+socket.user_id+'', function (err, removeuser)
-			{
+			connection.query('UPDATE `livehelp_messages` SET `status` = 1 WHERE `livehelp_messages`.`chat` = '+data.chatid+'', function (err, result)
+            {
 				if (err) throw err;
+				async.parallel([
+					function (callback)
+                    {
+                       connection.query('SELECT livehelp_chats.*,(COUNT(livehelp_messages.`status`)-SUM(livehelp_messages.`status`)) as unread_msg FROM livehelp_messages INNER JOIN livehelp_chats ON livehelp_messages.chat=livehelp_chats.id and livehelp_chats.status = 0 group by(livehelp_chats.id)', function (err3, userdata)
+                        {
+							if (err3) return callback(err3);
+							callback(null, userdata);
+                        });
+                    },
+				],
+				function (err, results)
+				{
+					if(err) throw err;
+					socket.emit('showcustomerlist',
+					{
+						customerdata:results[0],
+					});
+					connection.release();
+				});
 			});
-			connection.query('DELETE from comments where user_id='+socket.user_id+'', function (err, removecomments)
-			{
-				if (err) throw err;
-			}); */
-			connection.release();
 		});
-		socket.broadcast.to('room'+ socket.room_id +'').emit('removeuser', {user_id:socket.user_id});
-        socket.leave(socket.room);
     });
 	
 };
