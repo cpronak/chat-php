@@ -79,6 +79,7 @@ else
 		
 		$('#cust-profile-view').append('<div class="box box-primary"><div class="box-body box-profile" id="profile-view"><img class="profile-user-img img-responsive img-circle" src="'+ROOT+'skin/admin/images/userPlaceholder.png" alt="User profile picture"><h3 class="profile-username text-center">'+data.customerdata[0].name+'</h3><p class="text-muted text-center">'+data.customerdata[0].ipaddress+'</p><div class="text-center"><strong><i class="fa fa-envelope margin-r-5"></i> Email</strong><p class="text-muted">'+data.customerdata[0].email+'</p><strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong><p class="text-muted">'+data.customerdata[0].country+'</p><strong><i class="fa fa-globe margin-r-5"></i> Web Browser</strong><p class="text-muted">'+data.customerdata[0].useragent+'</p><strong><i class="fa fa-bookmark margin-r-5"></i> Referrer</strong><p class="text-muted">'+data.customerdata[0].referrer+'</p><strong><i class="fa fa-desktop margin-r-5"></i> Resolution</strong><p class="text-muted">'+data.customerdata[0].resolution+'</p><strong><i class="fa fa-globe margin-r-5"></i> Current Page</strong><p class="text-muted">'+data.customerdata[0].refresh+'</p><strong><i class="margin-r-5"></i> Chat Status</strong><p class="text-muted">'+status+'</p></div></div></div>');
 		$.cookie('live_chat_user',data.customerdata[0].id);
+		$(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
 	});
 	chatpage.on('custinfo-same',function(data){
 		if($.cookie('live_chat_user')==data.customerdata[0].id)
@@ -124,6 +125,7 @@ else
 			$('#chat-container').append(footer);
 			
 			$('#cust-profile-view').append('<div class="box box-primary"><div class="box-body box-profile" id="profile-view"><img class="profile-user-img img-responsive img-circle" src="'+ROOT+'skin/admin/images/userPlaceholder.png" alt="User profile picture"><h3 class="profile-username text-center">'+data.customerdata[0].name+'</h3><p class="text-muted text-center">'+data.customerdata[0].ipaddress+'</p><div class="text-center"><strong><i class="fa fa-envelope margin-r-5"></i> Email</strong><p class="text-muted">'+data.customerdata[0].email+'</p><strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong><p class="text-muted">'+data.customerdata[0].country+'</p><strong><i class="fa fa-globe margin-r-5"></i> Web Browser</strong><p class="text-muted">'+data.customerdata[0].useragent+'</p><strong><i class="fa fa-bookmark margin-r-5"></i> Referrer</strong><p class="text-muted">'+data.customerdata[0].referrer+'</p><strong><i class="fa fa-desktop margin-r-5"></i> Resolution</strong><p class="text-muted">'+data.customerdata[0].resolution+'</p><strong><i class="fa fa-globe margin-r-5"></i> Current Page</strong><p class="text-muted">'+data.customerdata[0].refresh+'</p><strong><i class="margin-r-5"></i> Chat Status</strong><p class="text-muted">'+status+'</p></div></div></div>');
+			$(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
 		}
 	});
 	function customerchatview(chatid){	
