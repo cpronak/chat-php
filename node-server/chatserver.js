@@ -101,7 +101,6 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 					},
 					], function (err, results)
 					{
-						console.log(results);
 						if (err) throw err;
 						if (results[0])
 						{
@@ -111,7 +110,7 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
                                 message_count: results[1]
                             });
 						socket.broadcast.to().emit('showcustomerlist', {customerdata:results[2]});
-						socket.broadcast.to().emit('custinfo', {customermsg:results[3],unreadmsg:results[1],customerdata:results[4]});
+						socket.broadcast.to().emit('custinfo-same', {customermsg:results[3],unreadmsg:results[1],customerdata:results[4]});
 						}
 						connection.release();
 					});	

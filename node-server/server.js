@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var cookie = require('cookie');
 app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'));
 var io     = require('socket.io').listen(server);
