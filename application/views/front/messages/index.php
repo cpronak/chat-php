@@ -87,6 +87,7 @@ else
 			$('#chat-window').append(footer);	
 		});
 		chatpage.on('showcomment',function(data){
+			console.log(data);
 			$('#chat_block_list').append('<li class="media"><div class="media-body"><h4 class="media-heading">'+data.message[0].username+'</h4><p>'+data.message[0].message+'</p></div></li>');
 			$('#msg_box').val('');
 		});

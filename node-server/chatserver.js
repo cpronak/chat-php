@@ -116,6 +116,74 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 			});
 		});
 	});
+	socket.on('sendcomment-admin', function (data)
+	{
+		pool.getConnection(function (err, connection)
+        {
+			connection.query('INSERT INTO livehelp_messages (chat,username,message,align,status) VALUES (' + data.user_id + ',"add message from admin","' + data.msg + '","2","1")', function (err, result)
+            {
+				if (err) throw err;
+				async.parallel([
+					function (callback)
+					{
+						connection.query('SELECT * FROM livehelp_messages INNER JOIN livehelp_chats ON livehelp_messages.chat=livehelp_chats.id and livehelp_messages.id = ' + result.insertId + '', function (err1, comments)
+						{
+							if (err1) return callback(err1);
+							callback(null, comments);
+						});
+					},
+					function (callback)
+                    {
+                        connection.query('SELECT count(id) as unread_count  from livehelp_messages where livehelp_messages.chat = '+ data.user_id +' and status=0', function (err2, comment_count)
+                        {
+							if (err2) return callback(err2);
+                            callback(null, comment_count);
+                        });
+                    },
+					function(callback)
+					{
+						connection.query('SELECT livehelp_chats.* from livehelp_chats where livehelp_chats.id = '+data.user_id+'', function (err5, customerdata)
+						{
+							if (err5) return callback(err5);
+							callback(null, customerdata);
+						});
+					},
+					function (callback)
+                    {
+                       connection.query('SELECT * from livehelp_messages where livehelp_messages.chat='+ data.user_id +'', function (err4, sendmsg)
+                        {
+							if (err4) return callback(err4);
+							callback(null, sendmsg);
+                        });
+                    },
+					function (callback)
+                    {
+                       connection.query('SELECT livehelp_chats.*,(COUNT(livehelp_messages.`status`)-SUM(livehelp_messages.`status`)) as unread_msg FROM livehelp_messages INNER JOIN livehelp_chats ON livehelp_messages.chat=livehelp_chats.id and livehelp_chats.status = 0 group by(livehelp_chats.id)', function (err3, userdata)
+                        {
+							if (err3) return callback(err3);
+							callback(null, userdata);
+                        });
+                    },
+					], function (err, results)
+					{
+						if (err) throw err;
+						if (results[0])
+						{
+							socket.emit('showcustomerlist',
+							{
+								customerdata:results[4],
+							});
+							socket.emit('custinfo-same',
+							{
+								customermsg:results[3],unreadmsg:results[1],customerdata:results[2]
+							});
+							socket.broadcast.to().emit('showcomment', {message: results[0],message_count: results[1]});
+						}
+						connection.release();
+					});	
+			});
+		});
+	});
 	socket.on('custinfo', function (data)
 	{
 		pool.getConnection(function (err, connection)

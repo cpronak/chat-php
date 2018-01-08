@@ -87,7 +87,7 @@ else
 			$('#chat_block_list').append('');
 		}
 		
-		footer='<div class="box-footer"><form action="#" method="post"><div class="input-group"><input type="text" name="message" onclick="removeunread('+data.customerdata[0].id+')" placeholder="Type Message ..." class="form-control"><span class="input-group-btn"><button type="button" class="btn btn-warning btn-flat">Send</button></span></div></form></div>';
+		footer='<div class="box-footer"><div class="input-group"><input type="text" name="message" id="msg_box" onclick="removeunread('+data.customerdata[0].id+')" placeholder="Type Message ..." class="form-control"><span class="input-group-btn"><button type="button" id="msg_send" class="btn btn-warning btn-flat">Send</button></span></div></div>';
 		$('#chat-container').append(footer);
 		
 		$('#cust-profile-view').append('<div class="box box-primary"><div class="box-body box-profile" id="profile-view"><img class="profile-user-img img-responsive img-circle" src="'+ROOT+'skin/admin/images/userPlaceholder.png" alt="User profile picture"><h3 class="profile-username text-center">'+data.customerdata[0].name+'</h3><p class="text-muted text-center">'+data.customerdata[0].ipaddress+'</p><div class="text-center"><strong><i class="fa fa-envelope margin-r-5"></i> Email</strong><p class="text-muted">'+data.customerdata[0].email+'</p><strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong><p class="text-muted">'+data.customerdata[0].country+'</p><strong><i class="fa fa-globe margin-r-5"></i> Web Browser</strong><p class="text-muted">'+data.customerdata[0].useragent+'</p><strong><i class="fa fa-bookmark margin-r-5"></i> Referrer</strong><p class="text-muted">'+data.customerdata[0].referrer+'</p><strong><i class="fa fa-desktop margin-r-5"></i> Resolution</strong><p class="text-muted">'+data.customerdata[0].resolution+'</p><strong><i class="fa fa-globe margin-r-5"></i> Current Page</strong><p class="text-muted">'+data.customerdata[0].refresh+'</p><strong><i class="margin-r-5"></i> Chat Status</strong><p class="text-muted">'+status+'</p></div></div></div>');
@@ -95,6 +95,7 @@ else
 		$(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
 	});
 	chatpage.on('custinfo-same',function(data){
+		console.log(data);
 		if($.cookie('live_chat_user')==data.customerdata[0].id)
 		{
 			$("#cust-profile-view").html('');
@@ -134,7 +135,7 @@ else
 				$('#chat_block_list').append('');
 			}
 			
-			footer='<div class="box-footer"><form action="#" method="post"><div class="input-group"><input type="text" name="message" onclick="removeunread('+data.customerdata[0].id+')" placeholder="Type Message ..." class="form-control"><span class="input-group-btn"><button type="button" class="btn btn-warning btn-flat">Send</button></span></div></form></div>';
+			footer='<div class="box-footer"><div class="input-group"><input type="text" name="message" id="msg_box" onclick="removeunread('+data.customerdata[0].id+')" placeholder="Type Message ..." class="form-control"><span class="input-group-btn"><button type="button" id="msg_send" class="btn btn-warning btn-flat">Send</button></span></div></div>';
 			$('#chat-container').append(footer);
 			
 			$('#cust-profile-view').append('<div class="box box-primary"><div class="box-body box-profile" id="profile-view"><img class="profile-user-img img-responsive img-circle" src="'+ROOT+'skin/admin/images/userPlaceholder.png" alt="User profile picture"><h3 class="profile-username text-center">'+data.customerdata[0].name+'</h3><p class="text-muted text-center">'+data.customerdata[0].ipaddress+'</p><div class="text-center"><strong><i class="fa fa-envelope margin-r-5"></i> Email</strong><p class="text-muted">'+data.customerdata[0].email+'</p><strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong><p class="text-muted">'+data.customerdata[0].country+'</p><strong><i class="fa fa-globe margin-r-5"></i> Web Browser</strong><p class="text-muted">'+data.customerdata[0].useragent+'</p><strong><i class="fa fa-bookmark margin-r-5"></i> Referrer</strong><p class="text-muted">'+data.customerdata[0].referrer+'</p><strong><i class="fa fa-desktop margin-r-5"></i> Resolution</strong><p class="text-muted">'+data.customerdata[0].resolution+'</p><strong><i class="fa fa-globe margin-r-5"></i> Current Page</strong><p class="text-muted">'+data.customerdata[0].refresh+'</p><strong><i class="margin-r-5"></i> Chat Status</strong><p class="text-muted">'+status+'</p></div></div></div>');
@@ -155,4 +156,26 @@ else
 	{
 		chatpage.emit('removeunread',{chatid:readid,admin_user_id:admin_user_id});
 	}
+	function sendChat(message)	
+	{
+		chatpage.emit('sendcomment-admin', {msg:message,user_id:$.cookie('live_chat_user')});
+	}
+	jQuery(document).on("keypress",'#msg_box', function(e) {	
+		if (e.which == 13) {
+			$(this).blur();
+			var message = $(this).val();
+			if(message)
+			{
+				sendChat(message);
+			}
+			return false; // prevent the button click from happening
+		}
+	});	
+	jQuery(document).on("click",'#msg_send', function(e) {	
+		var message = $('#msg_box').val();
+		if(message)
+		{
+			sendChat(message);
+		}
+	});
 }
