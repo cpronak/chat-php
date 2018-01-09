@@ -5,8 +5,8 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 	socket.on('senddata', function (data)
     {
 		socket.user_id = data.user_id;
-		customer['user' + data.user_id] = 'user' + data.user_id;
         socket.join('user' + data.user_id);
+        customer['user'+data.user_id] = socket;
 		console.log('user' + data.user_id);
 		pool.getConnection(function (err, connection)
 		{
@@ -181,7 +181,9 @@ module.exports.getUserFeeds = function (chatpage, socket, io, pool,async)
 								customermsg:results[3],unreadmsg:results[1],customerdata:results[2]
 							});
 							//customer['user'].emit("showcomment", {message: results[0],message_count: results[1]});
-							socket.broadcast.to('user'+ socket.user_id +'').emit('showcomment', {message: results[0],message_count: results[1]});
+                            customer['user'+data.user_id].emit('showcomment', {message: results[0],message_count: results[1]});
+							//socket.broadcast.to('user'+ socket.user_id +'').emit('showcomment', {message: results[0],message_count: results[1]});
+                            //socket.broadcast.to().emit('showcomment', {message: results[0],message_count: results[1]});
 						}
 						connection.release();
 					});	
