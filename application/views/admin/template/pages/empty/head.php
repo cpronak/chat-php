@@ -16,6 +16,7 @@
 <script src="<?php echo base_url('skin/admin/js/jquery.min.js'); ?>"></script>
 <script src="<?php echo base_url('skin/admin/js/bootstrap.min.js'); ?>"></script>
 <script>var ROOT = '<?php echo base_url(); ?>'</script>
+<script>var JS_URL = '<?php echo node_base_url(); ?>'</script>
 <?php
 if($style!="")
 	echo $style;

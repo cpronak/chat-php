@@ -25,7 +25,8 @@
 <script src="<?php echo base_url('skin/admin/js/adminlte.min.js'); ?>"></script>
 <script>var ROOT = '<?php echo base_url(); ?>'</script>
 <script>var admin_user_id='<?php echo $this->session->userdata('userid'); ?>'</script>
-<script src="http://192.168.101.122:3000/socket.io/socket.io.js"></script>
+<script>var JS_URL = '<?php echo node_base_url(); ?>'</script>
+<script src="<?php echo node_base_url(); ?>socket.io/socket.io.js"></script>
 <script src="<?php echo base_url('skin/admin/node/node-setup.js'); ?>"></script>
 
 <?php

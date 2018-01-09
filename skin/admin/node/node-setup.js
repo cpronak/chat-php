@@ -4,7 +4,7 @@ if(typeof io=="undefined")
 }
 else
 {
-	var socket = io.connect('http://localhost:3000');
+	var socket = io.connect(JS_URL);
 	var chatpage=socket.of('/chatpage')
 		.on('connect_failed', function (reason) {
 			alert('custom connect failed');
