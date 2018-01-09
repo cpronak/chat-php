@@ -18,7 +18,7 @@
 <?php echo form_close(); ?>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="http://192.168.101.122:3000/socket.io/socket.io.js"></script>
 <script>
 var user_id='<?php echo $this->input->cookie('chat-userid'); ?>';
 if(typeof io=="undefined")
@@ -28,7 +28,7 @@ if(typeof io=="undefined")
 }
 else
 {
-	var socket = io.connect('http://localhost:3000');
+	var socket = io.connect('http://192.168.101.122:3000');
 	var chatpage=socket.of('/chatpage')
 		.on('connect_failed', function (reason) {
 			$('#chat-window').hide();
